@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using School.API.Models;
+using School.API.VM;
 
 namespace School.API.Controllers
 {
@@ -12,6 +11,13 @@ namespace School.API.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
+        private readonly ILogger<StudentsController> _logger;
+
+        public StudentsController(ILogger<StudentsController> logger)
+        {
+            _logger = logger;
+        }
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<Student>> Get()
@@ -23,10 +29,13 @@ namespace School.API.Controllers
 
         // POST api/students
         [HttpPost]
-        public void Post([FromBody] Student student)
+        public void Post([FromBody] StudentDTO student)
         {
             var requestData = student;
+            _logger.LogDebug($"Received student {JsonConvert.SerializeObject(requestData)}");
+
             //Save data to DB
+
         }
 
 
